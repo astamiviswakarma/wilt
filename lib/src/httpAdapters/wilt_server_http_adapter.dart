@@ -5,10 +5,10 @@
  * Copyright :  S.Hamblett@OSCF
  *
  * Browser(dart:html) CouchDB HTTP adapter for Wilt.
- *  
+ *
  * This always returns a json Object the format of which is documented in
  * the Result Interface document
- *                      
+ *
  */
 
 part of wilt_server_client;
@@ -31,6 +31,9 @@ class WiltServerHTTPAdapter implements WiltHTTPAdapter {
 
   /// Password for change notification authorization
   String _password;
+
+  /// OAuth token for authorization. either user, password will be set or this.
+  String _token;
 
   /// Auth Type for change notification authorization
   String _authType;
@@ -264,6 +267,10 @@ class WiltServerHTTPAdapter implements WiltHTTPAdapter {
           wiltHeaders['Authorization'] = authString;
           break;
 
+        case Wilt.authBearer:
+          wiltHeaders['authorization'] = 'Bearer $_token';
+          break;
+
         case Wilt.authNone:
           break;
       }
@@ -281,6 +288,13 @@ class WiltServerHTTPAdapter implements WiltHTTPAdapter {
   void notificationAuthParams(String user, String password, String authType) {
     _user = user;
     _password = password;
+    _authType = authType;
+  }
+
+  /// Authentication token parameters
+  @override
+  void notificationAuthToken(String token, String authType) {
+    _token = token;
     _authType = authType;
   }
 }

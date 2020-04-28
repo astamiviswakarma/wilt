@@ -82,6 +82,8 @@ class WiltException implements Exception {
       'updateChangeNotificationParameters() no change notifier';
   static const String loginWrongParams =
       'Login() expects a non null user name and password';
+  static const String loginWrongTokens =
+      'Login() expects a non null auth token';
   static const String genIdsAmount = 'generateIds() expects a positive amount';
   static const String badConstParams =
       'Bad construction - some or all required parameters are null';

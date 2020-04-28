@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett@OSCF
  *
  * Provides a common interface for Wilt to connect over HTTP,
- * allowing for different HTTP adapters to be used. 
+ * allowing for different HTTP adapters to be used.
  */
 
 part of wilt;
@@ -25,4 +25,7 @@ abstract class WiltHTTPAdapter {
 
   /// Authentication parameters for change notification
   void notificationAuthParams(String user, String password, String authType);
+
+  /// Authentication token parameters for change notification
+  void notificationAuthToken(String token, String authType);
 }

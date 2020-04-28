@@ -4,7 +4,7 @@
  * Date   : 04/06/2013
  * Copyright :  S.Hamblett@OSCF
  *
- * 
+ *
  */
 
 part of wilt;
@@ -61,6 +61,11 @@ class Wilt {
   /// AUTH_BASIC denotes Basic HTTP authentication.
   /// If login is called AUTH_BASIC is set, otherwise it defaults to AUTH_NONE
   static const String authBasic = 'basic';
+
+  /// AUTH_BEARER denotes OAuth Token HTTP authentication.
+  /// If loginWithToken is called AUTH_BEARER is set,
+  /// otherwise it defaults to AUTH_NONE
+  static const String authBearer = 'bearer';
 
   /// No authentication
   static const String authNone = 'none';
@@ -148,6 +153,9 @@ class Wilt {
 
   /// Authentication, user password
   String _password;
+
+  /// OAuth token for authorization. either user, password will be set or this.
+  String _token;
 
   /// Authentication, type
   String authenticationType = authNone;
@@ -896,6 +904,23 @@ class Wilt {
 
     // Set the auth details for change notification
     httpAdapter.notificationAuthParams(_user, _password, authenticationType);
+  }
+
+  /// Authentication.
+  /// Updates the login credentials in Wilt that will be used for all further
+  /// requests to CouchDB. Both user name and password must be set, even if one
+  /// or the other is '' i.e empty. After logging in all communication
+  /// with CouchDB is made using the selected authentication method.
+  void loginWithToken(String authToken) {
+    if (authToken == null) {
+      throw WiltException(WiltException.loginWrongTokens);
+    }
+
+    _token = authToken;
+    authenticationType = authBearer;
+
+    // Set the auth details for change notification
+    httpAdapter.notificationAuthToken(_token, authenticationType);
   }
 
   /// Ask CouchDB to generate document Id's.
